@@ -148,15 +148,16 @@ export default function App() {
   const dosaY     = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], ["52vh","52vh","22vh","22vh","64vh","64vh","-20vh"])
   const dosaScale = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], [1.35,1.35,0.42,0.42,0.80,0.80,0.1])
   const dosaRot   = useTransform(scrollYProgress, [0, 1], [0, 210])
+  // Fade dosa out after menu section so it doesn't bleed into later sections
+  const dosaGlobalOpacity = useTransform(scrollYProgress, [0, 0.82, 0.88], [1, 1, 0])
 
   // ── Plate ───────────────────────────────────────────────────────────────────
   const plateOpa  = useTransform(scrollYProgress, [0.54,0.64,0.80,0.86], [0, 1, 1, 0])
   const plateY    = useTransform(scrollYProgress, [0.80,0.88], ["64vh","-20vh"])
 
-  // ── Hero text & bg parallax ──────────────────────────────────────────────────
-  const heroTextY  = useTransform(scrollYProgress, [0, 0.35], [0, -120])
-  const heroBgY    = useTransform(scrollYProgress, [0, 1], [0, 280])
-  const heroOpacity= useTransform(scrollYProgress, [0, 0.22], [1, 0])
+  // ── Hero - parallax (used for bg blob only, not text)
+  const heroBgY    = useTransform(scrollYProgress, [0, 0.25], [0, 200])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0])
 
   // ── Mouse parallax ───────────────────────────────────────────────────────────
   const rawX  = useMotionValue(0)
@@ -202,34 +203,33 @@ export default function App() {
         />
 
         {/* ══════════════════════════════════════════════════
-            GLOBAL FIXED: Floating Dosa
+            GLOBAL FIXED: Floating Dosa  (mix-blend-screen = black bg invisible)
         ══════════════════════════════════════════════════ */}
         <motion.div
-          className="fixed z-40 pointer-events-none mix-blend-screen -ml-[300px] -mt-[300px] w-[600px] h-[600px]"
-          style={{ left: dosaX, top: dosaY, scale: dosaScale, rotate: dosaRot }}
+          className="fixed z-40 pointer-events-none -ml-[300px] -mt-[300px] w-[600px] h-[600px]"
+          style={{ left: dosaX, top: dosaY, scale: dosaScale, rotate: dosaRot, opacity: dosaGlobalOpacity }}
         >
-          {/* Inner mouse-parallax layer */}
+          {/* mix-blend-screen on the img itself — black becomes transparent */}
           <motion.div className="w-full h-full relative" style={{ x: dosaMX, y: dosaMY }}>
-            <div className="absolute inset-0 bg-[#85B638]/10 blur-[90px] rounded-full scale-75" />
             <img
               src={`${B}assets/dosa_isolated.png`}
               alt="Floating Dosa"
               loading="eager"
-              className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_60px_rgba(133,182,56,0.18)]"
+              className="w-full h-full object-contain mix-blend-screen"
             />
           </motion.div>
         </motion.div>
 
         {/* GLOBAL FIXED: Empty Plate */}
         <motion.div
-          className="fixed z-30 pointer-events-none mix-blend-screen -ml-[350px] -mt-[350px] w-[700px] h-[700px]"
+          className="fixed z-30 pointer-events-none -ml-[350px] -mt-[350px] w-[700px] h-[700px]"
           style={{ left: '38vw', top: plateY, scale: 0.88, opacity: plateOpa }}
         >
           <img
             src={`${B}assets/empty_plate.png`}
             alt="Plate"
             loading="eager"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain mix-blend-screen"
           />
         </motion.div>
 
@@ -271,75 +271,155 @@ export default function App() {
         <main>
 
           {/* ══════════════════════════════════════════════════
-              1. HERO
+              1. HERO  — tall section with sticky inner panel
+              The text STICKS while inside the hero, then
+              naturally scrolls away when the section ends.
           ══════════════════════════════════════════════════ */}
-          <section id="story" className="relative h-[160vh] flex flex-col items-center justify-start pt-[28vh] overflow-hidden">
+          <section id="story" className="relative h-[220vh]">
 
-            {/* Parallax ambient blob */}
-            <motion.div aria-hidden className="fixed inset-0 pointer-events-none z-0" style={{ y: heroBgY }}>
-              <div className="absolute top-1/4 right-1/4 w-[700px] h-[700px] rounded-full bg-[#2D7521]/10 blur-[160px]" />
-            </motion.div>
+            {/* Sticky viewport-height container — text lives here */}
+            <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
 
-            {/* Stroke background text */}
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none z-10 select-none">
-              <motion.h2
-                initial={{ opacity: 0, scale: 0.92 }}
-                animate={{ opacity: 0.18, scale: 1 }}
-                transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ y: heroTextY }}
-                className="text-[18vw] leading-none font-black uppercase tracking-tighter text-stroke mix-blend-overlay"
-              >
-                Authentic
-              </motion.h2>
-            </div>
-
-            {/* Solid foreground text */}
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-[55%] w-full text-center pointer-events-none z-50 select-none">
-              <motion.h2
-                initial={{ opacity: 0, scale: 0.92 }}
-                animate={{ opacity: 0.88, scale: 1 }}
-                transition={{ duration: 2, ease: 'easeOut', delay: 0.08 }}
-                style={{ y: useTransform(heroTextY, v => v * 0.6) }}
-                className="text-[18vw] leading-none font-black uppercase tracking-tighter mix-blend-screen"
-              >
-                Authentic
-              </motion.h2>
-            </div>
-
-            {/* Bottom metadata */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.7, ease }}
-              style={{ opacity: heroOpacity }}
-              className="relative z-50 w-full max-w-7xl mx-auto px-6 md:px-12 mt-auto mb-[16vh] grid grid-cols-2 md:grid-cols-4 gap-6"
-            >
-              {[
-                { label: "Location",   value: "Ghatlodiya, Ahmedabad" },
-                { label: "Opening",    value: "11 AM – 11 PM" },
-                { label: "Specialty",  value: "South Indian Cuisine" },
-                { label: "Rating",     value: "4.8 ★  (537 reviews)" },
-              ].map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 + i * 0.08 }}>
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-white/30 mb-1.5">{item.label}</p>
-                  <p className="text-sm font-light text-white/70">{item.value}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Scroll indicator */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.3 }}
-              style={{ opacity: heroOpacity }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-white/30"
-            >
-              Scroll
-              <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>
-                <ChevronDown size={14} className="text-[#85B638]" />
+              {/* Ambient parallax blob (inside sticky so it stays) */}
+              <motion.div aria-hidden className="absolute inset-0 pointer-events-none z-0" style={{ y: heroBgY }}>
+                <div className="absolute top-1/3 right-1/4 w-[700px] h-[700px] rounded-full bg-[#2D7521]/12 blur-[160px]" />
+                <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full bg-[#85B638]/5 blur-[120px]" />
               </motion.div>
-            </motion.div>
+
+              {/* BACKGROUND STROKE TEXT — sits behind dosa */}
+              <motion.div
+                aria-hidden
+                className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 select-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5, ease: 'easeOut' }}
+              >
+                <h2 className="text-[20vw] leading-none font-black uppercase tracking-tighter text-stroke opacity-20">
+                  Authentic
+                </h2>
+              </motion.div>
+
+              {/* HERO CONTENT — top left */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.1, ease }}
+                style={{ opacity: heroOpacity }}
+                className="relative z-50 flex flex-col justify-between h-full px-6 md:px-12 pt-28 pb-10 max-w-7xl mx-auto w-full"
+              >
+                {/* Top badge */}
+                <div className="flex items-center gap-3">
+                  <motion.span
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.8, delay: 0.4, ease }}
+                    className="block w-10 h-px bg-[#85B638] origin-left"
+                  />
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                    className="text-[10px] tracking-[0.35em] uppercase text-[#85B638] font-semibold"
+                  >
+                    Ghatlodiya, Ahmedabad
+                  </motion.span>
+                </div>
+
+                {/* Main headline — large, left-aligned */}
+                <div className="md:max-w-[55%]">
+                  <div className="overflow-hidden mb-2">
+                    <motion.h1
+                      initial={{ y: '110%' }}
+                      animate={{ y: '0%' }}
+                      transition={{ duration: 1, delay: 0.3, ease }}
+                      className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95]"
+                    >
+                      Crispy.
+                    </motion.h1>
+                  </div>
+                  <div className="overflow-hidden mb-2">
+                    <motion.h1
+                      initial={{ y: '110%' }}
+                      animate={{ y: '0%' }}
+                      transition={{ duration: 1, delay: 0.45, ease }}
+                      className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] text-[#85B638]"
+                    >
+                      Authentic.
+                    </motion.h1>
+                  </div>
+                  <div className="overflow-hidden">
+                    <motion.h1
+                      initial={{ y: '110%' }}
+                      animate={{ y: '0%' }}
+                      transition={{ duration: 1, delay: 0.6, ease }}
+                      className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] opacity-30"
+                    >
+                      Irresistible.
+                    </motion.h1>
+                  </div>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.9, ease }}
+                    className="mt-8 text-white/40 font-light text-base md:text-lg max-w-sm leading-relaxed"
+                  >
+                    Experience the best South Indian dosa in Ahmedabad — stone-ground batter, 100% authentic.
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 1.1, ease }}
+                    className="mt-8 flex items-center gap-4"
+                  >
+                    <a
+                      href="#menu"
+                      className="px-7 py-3.5 rounded-xl bg-[#2D7521] hover:bg-[#85B638] text-white text-sm font-bold tracking-[0.12em] uppercase transition-all flex items-center gap-2 group shadow-[0_0_30px_rgba(45,117,33,0.35)]"
+                    >
+                      View Menu
+                      <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                    <a
+                      href="tel:09227128797"
+                      className="px-7 py-3.5 rounded-xl border border-white/10 hover:border-white/30 text-white/60 hover:text-white text-sm font-medium tracking-[0.08em] transition-all"
+                    >
+                      Order Now
+                    </a>
+                  </motion.div>
+                </div>
+
+                {/* Bottom metadata bar */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pb-4 border-t border-white/[0.06] pt-6">
+                  {[
+                    { label: "Opening",   value: "11 AM – 11 PM" },
+                    { label: "Location",  value: "Ghatlodiya, Ahmedabad" },
+                    { label: "Specialty", value: "South Indian Cuisine" },
+                    { label: "Rating",    value: "4.8 ★  (537 reviews)" },
+                  ].map((item, i) => (
+                    <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 + i * 0.07 }}>
+                      <p className="text-[9px] tracking-[0.3em] uppercase text-white/25 mb-1">{item.label}</p>
+                      <p className="text-xs font-light text-white/55">{item.value}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Scroll indicator */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5 }}
+                style={{ opacity: heroOpacity }}
+                className="absolute bottom-8 right-10 z-50 flex flex-col items-center gap-2 text-[9px] tracking-[0.3em] uppercase text-white/25 hidden md:flex"
+              >
+                <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>
+                  <ChevronDown size={13} className="text-[#85B638]" />
+                </motion.div>
+                Scroll
+              </motion.div>
+
+            </div>{/* end sticky */}
           </section>
 
           {/* ══════════════════════════════════════════════════
