@@ -254,7 +254,7 @@ export default function App() {
 
             {/* Desktop CTA */}
             <a
-              href="tel:09227128797"
+              href="tel:9033640100"
               className="hidden md:flex px-5 py-2.5 rounded-xl border border-white/12 bg-white/[0.04] backdrop-blur-md text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-[#2D7521] hover:border-[#2D7521] transition-all duration-300"
             >
               Order Now
@@ -291,7 +291,7 @@ export default function App() {
               </a>
             ))}
             <a
-              href="tel:09227128797"
+              href="tel:9033640100"
               onClick={() => setMobileMenu(false)}
               className="mt-4 px-8 py-4 rounded-2xl bg-[#2D7521] text-white font-bold tracking-[0.15em] uppercase text-sm flex items-center gap-2"
             >
@@ -377,7 +377,7 @@ export default function App() {
                     <a href="#menu" className="px-7 py-3.5 rounded-xl bg-[#2D7521] hover:bg-[#85B638] text-white text-sm font-bold tracking-[0.12em] uppercase transition-all flex items-center gap-2 group shadow-[0_8px_30px_rgba(45,117,33,0.4)]">
                       View Menu <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                     </a>
-                    <a href="tel:09227128797" className="px-7 py-3.5 rounded-xl border border-white/10 hover:border-white/25 text-white/50 hover:text-white text-sm transition-all">
+                    <a href="tel:9033640100" className="px-7 py-3.5 rounded-xl border border-white/10 hover:border-white/25 text-white/50 hover:text-white text-sm transition-all">
                       Call Now
                     </a>
                   </motion.div>
@@ -476,7 +476,7 @@ export default function App() {
                 <a href="#menu" className="flex-1 text-center px-5 py-4 rounded-2xl bg-[#2D7521] hover:bg-[#85B638] text-white text-sm font-bold tracking-[0.1em] uppercase transition-all shadow-[0_6px_24px_rgba(45,117,33,0.4)] flex items-center justify-center gap-2">
                   View Menu <ArrowRight size={14} />
                 </a>
-                <a href="tel:09227128797" className="px-5 py-4 rounded-2xl border border-white/10 text-white/50 text-sm flex items-center justify-center">
+                <a href="tel:9033640100" className="px-5 py-4 rounded-2xl border border-white/10 text-white/50 text-sm flex items-center justify-center">
                   <Phone size={15} />
                 </a>
               </motion.div>
@@ -778,24 +778,38 @@ export default function App() {
                   <motion.h3 variants={lineReveal} className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight bg-gradient-to-r from-[#85B638] to-[#2D7521] bg-clip-text text-transparent">something great.</motion.h3>
                 </div>
 
-                <motion.p variants={fadeUp} className="text-white/40 text-sm md:text-base font-light leading-relaxed max-w-xl mx-auto mb-10 md:mb-14">
+                <motion.p variants={fadeUp} className="text-white/40 text-sm md:text-base font-light leading-relaxed max-w-xl mx-auto mb-6">
                   I design and develop premium interactive websites — for restaurants, brands, and startups that refuse to be ordinary. Fast delivery, pixel-perfect results.
                 </motion.p>
 
+                {/* ── Demo Notice ── */}
+                <motion.div
+                  variants={fadeUp}
+                  className="inline-flex items-start gap-3 rounded-2xl border border-[#85B638]/20 bg-[#85B638]/5 px-5 py-4 mb-10 md:mb-12 max-w-xl mx-auto text-left"
+                >
+                  <span className="text-lg mt-0.5 shrink-0">⚡</span>
+                  <div>
+                    <p className="text-[#85B638] text-xs font-bold tracking-[0.15em] uppercase mb-1">This is just a demo</p>
+                    <p className="text-white/50 text-sm font-light leading-relaxed">
+                      The final website will be significantly more impressive — richer animations, more content, custom 3D elements, and production-grade polish. Call us to discuss your vision.
+                    </p>
+                  </div>
+                </motion.div>
+
                 <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a
-                    href="mailto:hello@youremail.com"
+                    href="tel:9033640100"
                     className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-5 rounded-2xl bg-[#2D7521] hover:bg-[#85B638] text-white font-bold tracking-[0.12em] uppercase text-sm transition-all flex items-center justify-center gap-3 group shadow-[0_0_28px_rgba(45,117,33,0.4)] hover:shadow-[0_0_44px_rgba(133,182,56,0.5)]"
                   >
-                    Work With Me
+                    Call to Discuss
                     <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
                   </a>
                   <a
-                    href="tel:09227128797"
+                    href="tel:9033640100"
                     className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-5 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-[#85B638]/40 text-white font-medium tracking-[0.09em] text-sm transition-all flex items-center justify-center gap-3"
                   >
                     <Phone size={15} className="text-[#85B638]" />
-                    09227128797
+                    9033640100
                   </a>
                 </motion.div>
               </motion.div>
@@ -826,7 +840,7 @@ export default function App() {
                     {[
                       { icon: <Instagram size={14} />, label: 'Instagram', href: '#' },
                       { icon: <Facebook size={14} />,  label: 'Facebook',  href: '#' },
-                      { icon: <Phone size={14} />,     label: 'Call',      href: 'tel:09227128797' },
+                      { icon: <Phone size={14} />,     label: 'Call',      href: 'tel:9033640100' },
                     ].map((s, i) => (
                       <a key={i} href={s.href} aria-label={s.label}
                         className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-white/40 hover:bg-[#2D7521] hover:border-[#2D7521] hover:text-white transition-all duration-300"
