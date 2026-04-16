@@ -183,9 +183,26 @@ export default function App() {
         {/* ── Film grain ──────────────────────────────────────────────────── */}
         <div className="noise-overlay" aria-hidden />
 
-        {/* ── Custom cursor (desktop only) ────────────────────────────────── */}
-        <motion.div className="cursor-dot hidden md:block" style={{ left: curX, top: curY, translateX: '50vw', translateY: '50vh' }} />
-        <motion.div className="cursor-ring hidden md:block" style={{ left: curX, top: curY, translateX: '50vw', translateY: '50vh' }} />
+        {/* ── Dosa Cursor (desktop only) ────────────────────────────────── */}
+        {/* Tiny green dot — precise click target */}
+        <motion.div
+          className="hidden md:block fixed z-[9999] pointer-events-none w-2 h-2 rounded-full bg-[#85B638]"
+          style={{ left: curX, top: curY, translateX: 'calc(-50% + 50vw)', translateY: 'calc(-50% + 50vh)' }}
+        />
+        {/* Dosa image that lags behind with spring physics */}
+        <motion.div
+          className="hidden md:block fixed z-[9998] pointer-events-none -ml-6 -mt-6 w-12 h-12"
+          style={{ left: spotX, top: spotY, translateX: 'calc(-50% + 50vw)', translateY: 'calc(-50% + 50vh)' }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+        >
+          <img
+            src={`${B}assets/dosa_isolated.png`}
+            alt=""
+            aria-hidden
+            className="w-full h-full object-contain mix-blend-screen opacity-90"
+          />
+        </motion.div>
 
         {/* ── Mouse spotlight (desktop only) ──────────────────────────────── */}
         <motion.div
