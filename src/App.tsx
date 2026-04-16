@@ -114,7 +114,7 @@ export default function App() {
              style={{ x: useTransform(smoothMouseX, v => v * -0.05), y: useTransform(smoothMouseY, v => v * -0.05) }}
           >
              <div className="absolute inset-0 bg-logoLightGreen/10 blur-[80px] rounded-full scale-75 shadow-2xl"></div>
-             <img src="/assets/dosa_isolated.png" alt="Floating Dosa" className="w-full h-full object-contain relative z-10" />
+          <img src={`${import.meta.env.BASE_URL}assets/dosa_isolated.png`} alt="Floating Dosa" className="w-full h-full object-contain relative z-10" />
           </motion.div>
         </motion.div>
 
@@ -123,7 +123,7 @@ export default function App() {
           className="fixed z-30 pointer-events-none mix-blend-screen -ml-[350px] -mt-[350px] w-[700px] h-[700px]"
           style={{ left: "40vw", top: plateY, scale: 0.9, opacity: plateOpacity }}
         >
-          <img src="/assets/empty_plate.png" alt="Empty Plate Pad" className="w-full h-full object-contain opacity-80" />
+          <img src={`${import.meta.env.BASE_URL}assets/empty_plate.png`} alt="Empty Plate Pad" className="w-full h-full object-contain opacity-80" />
         </motion.div>
 
         {/* MINIMAL NAVIGATION */}
@@ -134,7 +134,7 @@ export default function App() {
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-white/5">
-                <img src="/assets/logo.png" alt="Pancham Dosa Logo" className="w-full h-full object-cover" onError={(e) => e.currentTarget.style.display = 'none'} />
+                <img src={`${import.meta.env.BASE_URL}assets/logo.png`} alt="Pancham Dosa Logo" className="w-full h-full object-cover" onError={(e) => e.currentTarget.style.display = 'none'} />
               </div>
               <h1 className="text-xl font-medium tracking-[0.3em] uppercase">Pancham</h1>
             </div>
@@ -341,7 +341,7 @@ export default function App() {
               <div className="md:col-span-5">
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-10 h-10 rounded-full overflow-hidden bg-white/5 flex items-center justify-center border border-white/5">
-                    <img src="/assets/logo.png" alt="Pancham Dosa Logo" className="w-full h-full object-cover" onError={(e) => e.currentTarget.style.display = 'none'} />
+                    <img src={`${import.meta.env.BASE_URL}assets/logo.png`} alt="Pancham Dosa Logo" className="w-full h-full object-cover" onError={(e) => e.currentTarget.style.display = 'none'} />
                   </div>
                   <h1 className="text-xl font-light tracking-[0.2em] uppercase text-white">Pancham Dosa</h1>
                 </div>
