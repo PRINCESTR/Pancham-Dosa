@@ -143,12 +143,14 @@ export default function App() {
   // Scroll progress from the whole page
   const { scrollYProgress } = useScroll()
 
-  // ── Dosa journey transforms (all at top level — no hooks in JSX) ────────────
-  const dosaX     = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], ["50vw","50vw","78vw","78vw","38vw","38vw","38vw"])
-  const dosaY     = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], ["52vh","52vh","22vh","22vh","64vh","64vh","-20vh"])
-  const dosaScale = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], [1.35,1.35,0.42,0.42,0.80,0.80,0.1])
-  const dosaRot   = useTransform(scrollYProgress, [0, 1], [0, 210])
-  // Fade dosa out after menu section so it doesn't bleed into later sections
+  // ── Dosa journey transforms ──────────────────────────────────────────────────
+  // Hero: dosa starts RIGHT side so headline text is never covered
+  const dosaX     = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], ["72vw","72vw","78vw","78vw","38vw","38vw","38vw"])
+  const dosaY     = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], ["50vh","50vh","22vh","22vh","64vh","64vh","-20vh"])
+  const dosaScale = useTransform(scrollYProgress, [0,0.18,0.32,0.50,0.62,0.80,0.88], [1.2, 1.2, 0.42,0.42,0.80,0.80,0.1])
+  // Subtle slow rotation — full 360 over whole scroll looks dizzy; use 45deg max
+  const dosaRot   = useTransform(scrollYProgress, [0, 1], [0, 45])
+  // Fade dosa out cleanly after the menu section
   const dosaGlobalOpacity = useTransform(scrollYProgress, [0, 0.82, 0.88], [1, 1, 0])
 
   // ── Plate ───────────────────────────────────────────────────────────────────
@@ -185,7 +187,8 @@ export default function App() {
     <ReactLenis root options={{ lerp: 0.055, smoothWheel: true }}>
       <div
         ref={containerRef}
-        className="bg-black min-h-screen text-white font-sans selection:bg-[#2D7521] selection:text-white relative overflow-x-hidden cursor-none"
+        className="min-h-screen text-white font-sans selection:bg-[#2D7521] selection:text-white relative overflow-x-hidden cursor-none"
+        style={{ backgroundColor: '#0a0804' }}
       >
 
         {/* ── Film grain ── */}
@@ -299,13 +302,13 @@ export default function App() {
                 </h2>
               </motion.div>
 
-              {/* HERO CONTENT — top left */}
+              {/* HERO CONTENT — occupies LEFT 50% of screen, dosa floats RIGHT */}
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.1, ease }}
                 style={{ opacity: heroOpacity }}
-                className="relative z-50 flex flex-col justify-between h-full px-6 md:px-12 pt-28 pb-10 max-w-7xl mx-auto w-full"
+                className="relative z-50 flex flex-col justify-between h-full px-6 md:px-12 pt-28 pb-10 w-full"
               >
                 {/* Top badge */}
                 <div className="flex items-center gap-3">
@@ -325,34 +328,34 @@ export default function App() {
                   </motion.span>
                 </div>
 
-                {/* Main headline — large, left-aligned */}
-                <div className="md:max-w-[55%]">
-                  <div className="overflow-hidden mb-2">
+                {/* Main headline — occupies strictly left half */}
+                <div className="w-full md:w-[48%]">
+                  <div className="overflow-hidden mb-1">
                     <motion.h1
                       initial={{ y: '110%' }}
                       animate={{ y: '0%' }}
                       transition={{ duration: 1, delay: 0.3, ease }}
-                      className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95]"
+                      className="text-[clamp(3.5rem,7vw,6.5rem)] font-black tracking-tight leading-[0.9]"
                     >
                       Crispy.
                     </motion.h1>
                   </div>
-                  <div className="overflow-hidden mb-2">
+                  <div className="overflow-hidden mb-1">
                     <motion.h1
                       initial={{ y: '110%' }}
                       animate={{ y: '0%' }}
                       transition={{ duration: 1, delay: 0.45, ease }}
-                      className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] text-[#85B638]"
+                      className="text-[clamp(3.5rem,7vw,6.5rem)] font-black tracking-tight leading-[0.9] text-[#85B638]"
                     >
                       Authentic.
                     </motion.h1>
                   </div>
-                  <div className="overflow-hidden">
+                  <div className="overflow-hidden mb-8">
                     <motion.h1
                       initial={{ y: '110%' }}
                       animate={{ y: '0%' }}
                       transition={{ duration: 1, delay: 0.6, ease }}
-                      className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] opacity-30"
+                      className="text-[clamp(3.5rem,7vw,6.5rem)] font-black tracking-tight leading-[0.9] opacity-20"
                     >
                       Irresistible.
                     </motion.h1>
@@ -362,29 +365,28 @@ export default function App() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.9, delay: 0.9, ease }}
-                    className="mt-8 text-white/40 font-light text-base md:text-lg max-w-sm leading-relaxed"
+                    className="text-white/40 font-light text-sm md:text-base max-w-[22rem] leading-relaxed mb-8"
                   >
-                    Experience the best South Indian dosa in Ahmedabad — stone-ground batter, 100% authentic.
+                    Experience the best South Indian dosa in Ahmedabad — stone-ground batter, 100% authentic flavour.
                   </motion.p>
 
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1.1, ease }}
-                    className="mt-8 flex items-center gap-4"
+                    className="flex items-center gap-3 flex-wrap"
                   >
                     <a
                       href="#menu"
-                      className="px-7 py-3.5 rounded-xl bg-[#2D7521] hover:bg-[#85B638] text-white text-sm font-bold tracking-[0.12em] uppercase transition-all flex items-center gap-2 group shadow-[0_0_30px_rgba(45,117,33,0.35)]"
+                      className="px-7 py-3.5 rounded-xl bg-[#2D7521] hover:bg-[#85B638] text-white text-sm font-bold tracking-[0.12em] uppercase transition-all flex items-center gap-2 group shadow-[0_8px_32px_rgba(45,117,33,0.4)]"
                     >
-                      View Menu
-                      <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                      View Menu <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                     </a>
                     <a
                       href="tel:09227128797"
-                      className="px-7 py-3.5 rounded-xl border border-white/10 hover:border-white/30 text-white/60 hover:text-white text-sm font-medium tracking-[0.08em] transition-all"
+                      className="px-7 py-3.5 rounded-xl border border-white/10 hover:border-white/25 text-white/50 hover:text-white text-sm font-medium tracking-[0.08em] transition-all"
                     >
-                      Order Now
+                      Call Now
                     </a>
                   </motion.div>
                 </div>

@@ -41,12 +41,12 @@
 
 html {
   scroll-behavior: auto;
-  background-color: #000;
+  background-color: #0a0804;
 }
 
 body {
   overflow-x: hidden;
-  background-color: #000;
+  background-color: #0a0804;
   color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
